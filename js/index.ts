@@ -7,9 +7,11 @@ class Locations {
 		public city: string,
 		public zip: number,
 		public address: string,
-		public img_src: string
+		public img_src: string,
+		public visit_time?: Date
 		){}
 	render (){
+		
 		return `
 				<div class="col-12 col-lg-3 col-sm-6 p-1">
 					<div class="d-flex flex-nowrap flex-sm-column align-items-center justify-content-center bg-white p-2 rounded content_box">	
@@ -20,15 +22,23 @@ class Locations {
 				              <hr class="m-auto">
 				              <p class="m-auto"><span>${this.city}, </span><span>${this.zip}</span></p>
 				              <p class="m-auto">${this.address}</p>
+				              ${this.visited()}
 				            </div>
-			            
-
 	            	</div>
 	            </div>
 	            `
-				
-		
 	}
+	visited (){
+		let options = {year: '2-digit', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit'}
+		if (this.visit_time){
+			return `
+				<p class="m-auto">visited: ${new Intl.DateTimeFormat('de-DE', options).format(this.visit_time)}</p>
+				`
+		} else {
+			return ''
+		}
+	}
+	
 }
 
 class Restaurant extends Locations{
@@ -73,8 +83,8 @@ class Events extends Locations{
 	}
 	render(){
 		//this is necessary, to get my desired output format, though I'm unsure how many browser support that!
-		var options = {year: 'numeric', month: '2-digit', day: 'numeric'}
-		var options_time = {hour: '2-digit', minute: '2-digit', weekday: 'long'}
+		let options = {year: 'numeric', month: '2-digit', day: 'numeric'}
+		let options_time = {hour: '2-digit', minute: '2-digit', weekday: 'long'}
 		return `
 				<div class="col-12 col-lg-3 col-sm-6 p-1">
 					<div class="d-flex flex-nowrap flex-sm-column align-items-center justify-content-center bg-white p-2 rounded content_box">
@@ -97,7 +107,7 @@ class Events extends Locations{
 
 //Eventuell noch den Type in die Klassen integrieren, um später auch eine Zuordnung zu den Tabs machen zu können!!!
 var location_map: any = []
-location_map.push(new Locations("location", "Karlskirche", "Vienna", 1010, "Karlsplatz 1", "img/karlskirche.jpg"));
+location_map.push(new Locations("location", "Karlskirche", "Vienna", 1010, "Karlsplatz 1", "img/karlskirche.jpg", new Date(2016,11,9,14,30)));
 location_map.push(new Locations("location", "Viennas Zoo", "Vienna", 1130, "Maxingstraße 13b", "img/vienna_zoo.jpg"));
 location_map.push(new Locations("location", "Viennas Zoo", "Vienna", 1130, "Maxingstraße 13b", "img/vienna_zoo.jpg"));
 
